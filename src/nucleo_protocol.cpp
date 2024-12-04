@@ -114,8 +114,8 @@ void Protocol::handle_packet_stream(std::vector<std::vector<uint8_t>> &packets) 
     // We reset the keys vector, because there may be newer packet in the buffer
     keys = {};     
 
-    // Last element is complete? If not put in buffer
-    if (!is_valid_packet(packets[packets.size() - 1])) handle_buffer_reconstruction(packets[packets.size() - 1], keys);
+    // NOT RECONSIDER LAST PACKET!!: Last element is complete? If not put in buffer
+    if (end != packets.size() && !is_valid_packet(packets[packets.size() - 1])) handle_buffer_reconstruction(packets[packets.size() - 1], keys);
 
     // READ PACKETs FINALLY
     for (int i = packets.size() - 1; i >= end; i--) if (is_valid_packet(packets[i])) decode_packet(packets[i], keys);
